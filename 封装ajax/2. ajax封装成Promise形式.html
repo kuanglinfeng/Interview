@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      function transStr(obj) {
+        const arr = []
+        for (let prop in obj) {
+          let str = prop + '=' + obj[prop]
+          arr.push(str)
+        }
+        return arr.join('&')
+      }
+      // config对象包含：type url data async
+      function ajax(config) {
+        let { type, async, data, url } = config
+        type = type || 'GET'
+        async = async || true
+        data = data || null
+        let xhr = null
+        return new Promise((resolve, reject) => {
+          if (window.XMLHttpRequest) {
+            xhr = new XMLHttpRequest()
+          } else {
+            xhr = new ActiveXObject('Microsoft.XMLHTTP')
+          }
+          if (type === 'GET') {
+            let s = transStr(data)
+            url = url + '?' + s
+            xhr.open(type, url, async)
+            xhr.send()
+          } else {
+            xhr.open(type, url, async)
+            xhr.setRequestHeader(
+              'Content-Type',
+              'application/www-form-urlencoded'
+            )
+            data = transStr(data)
+            xhr.send(data)
+          }
+          xhr.onreadystatechange = function () {
+            if (xhr.readyState === 4) {
+              let status = xhr.status
+              if ((status === 200 && status < 300) || status === 304) {
+                resolve(JSON.parse(xhr.responseText))
+              } else {
+                reject(status)
+              }
+            }
+          }
+        })
+      }
+
+      async function getList() {
+        let res = await ajax({url: 'http://mock-api.com/DmgvxyKQ.mock/list'})
+        console.log(res)
+      }
+
+      ajax({url: 'http://mock-api.com/DmgvxyKQ.mock/list'}).then(res => {
+        console.log(res.data)
+      })
+      
+    </script>
+  </body>
+</html>

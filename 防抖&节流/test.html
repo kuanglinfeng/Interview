@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <style>
+    .container {
+      margin: 100px auto;
+      text-align: center;
+    }
+    p {
+      font-size: 20px;
+      margin: 2rem;
+    }
+    button {
+      width: 100px; height: 30px;
+      border-radius: 5px;
+      cursor: pointer;
+      box-shadow: 0 0 3px 3px #ccc;
+      outline: none;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <p>0</p>
+    <button>+</button>
+  </div>
+
+  <script src="./throttle.js"></script>
+  <script src="./debounce.js"></script>
+  <script>
+    
+    const p = document.querySelector('p')
+    const btn = document.querySelector('button')
+
+    /**
+     * 数据劫持，当数据发生变化，页面会自动渲染，dom重新显示更新的内容 
+     */
+    function Proxy(count, dom) {
+      Object.defineProperty(Proxy.prototype, 'val', {
+        get() {
+          return count === undefined ? 0 : count
+        },
+        set(_count) {
+          count = _count
+          dom.innerText = count
+        }
+      })
+    }
+
+    let proxy = new Proxy(0, p)
+
+    // btn.onclick = function () {
+    //   proxy.val++
+    // }
+
+    function handleClick() {
+      proxy.val++
+    }
+
+    // var newHandleClick = throttle(handleClick, 3000)
+
+    var newHandleClick = debounce(handleClick, 3000)
+    
+    btn.onclick = newHandleClick
+    
+  </script>
+</body>
+</html>
