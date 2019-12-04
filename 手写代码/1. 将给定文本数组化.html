@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      // 给一段文本，将文本数组化，示例如下：asd ehe  rjr
+      // d  erregrnt eruk
+      // rth sthst ar   gae
+
+      // // 输出
+      // [asd, ehe, rjr]
+      // [d, erregrnt, eruk]
+      // [rth, sthst, ar, gae]
+
+      let s = `asd ehe  rjr
+               d  erregrnt eruk
+               rth sthst ar   gae`
+
+      // 思路：
+      // trim 去掉首尾的空白字符（空格、回车等）
+      // 再用split分割字符串为数组
+      const arr = s.trim().split(/\n/)
+
+      const res = []
+      arr.forEach(item => {
+        res.push(item.trim().split(/ +/))
+      })
+      console.log(res);
+
+
+      
+    </script>
+  </body>
+</html>

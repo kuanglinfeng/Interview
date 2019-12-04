@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+<body>
+  <script>
+
+    // ^\s* 表示以0个或者多个空白字符开头
+    // ^\s+ 表示以1个或者多个空白字符开头
+    // \s+$ 表示以1个或者多个空白字符结尾
+    // g 全局匹配，加了这个选项才会将首尾空白字符都去除，否则只会匹配到一个符合的子表达式就执行完毕
+    String.prototype.myTrim = function () {
+      return this.replace(/(^\s+)|(\s+$)/g, "")
+    }
+
+    String.prototype.myLeftTrim = function () {
+      return this.replace(/(^\s+)/, "")
+    }
+
+    String.prototype.myRightTrim = function () {
+      return this.replace(/(\s+$)/, "")
+    }
+
+    let s = `   sdfsf   sdfsklfj  
+    `
+
+    console.log(s.myTrim().split(''));
+    console.log(s.myLeftTrim().split(''));
+    console.log(s.myRightTrim().split(''));
+    
+    
+    
+    
+    
+  </script>
+</body>
+</html>
