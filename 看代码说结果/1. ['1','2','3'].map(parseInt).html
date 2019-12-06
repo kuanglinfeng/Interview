@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+<body>
+  <script>
+    // ['1','2','3'].map(parseInt) 结果输出什么，为什么？
+
+    console.log(['1','2','3'].map(parseInt)); // [1, NaN, NaN]
+
+    // parseInt 默认接收两个参数 元素的值(如果不是数字会想办法转为数字，转化失败返回NaN)   和  其对应进制 
+    //          返回值是返回这个元素的十进制形式
+
+    // 所以过程是这样的：
+    // 1. 
+    // 对以 index = 0 为进制的 字符 '1'转为数字后，再转为十进制的数字，
+    // 转化结果为：为这个数值本身1（任何数字以0为进制转化为10进制都为这个数字本身）    
+    // 2. 
+    // 对以 index = 1 为进制的 字符 '2'转为数字后，再转为十进制的数字，
+    // 转化结果为：1进制没有1及比1大的数字，这里出现了2，所以返回NaN
+    // 3. 
+    // 对以 index = 2 为进制的 字符 '3'转为数字后，再转为十进制的数字，
+    // 转化结果为：2进制没有2及比2大的数字，这里出现了3，所以返回NaN
+    // 4. 返回数组 [1, NaN, NaN]
+    
+  </script>
+</body>
+</html>
