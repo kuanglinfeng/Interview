@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+<body>
+  <script>
+
+    function bigNumberSum(a, b) {
+      //   312
+      // 12134
+      // 补零对齐
+      let len = Math.max(a.length, b.length)
+      for (let i = 0; i < len; i++) {
+        if (a[i] === undefined) {
+          a = 0 + a
+        }
+        if (b[i] === undefined) {
+          b = 0 + b
+        }
+      }
+      // 逐位相加
+      let sum = 0
+      let carried = 0
+      const res = []
+      for (let i = len - 1; i >= 0; i--) {
+        sum = +a[i] + +b[i] + carried
+        res.unshift(sum % 10)
+        if (sum > 9) {
+          carried = 1
+        } else {
+          carried = 0
+        }
+      }
+      if (carried)  res.unshift(1)
+      return res.join('')
+    }
+
+    console.log(bigNumberSum('99999999999999999999999999999999999999999999999999999999999999999999999999999', '99'));
+    console.log(99999999999999999999999999999999999999999999999999999999999999999999999999999 + 99);
+    
+    
+  </script>
+</body>
+</html>
