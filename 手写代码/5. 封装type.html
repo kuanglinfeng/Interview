@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+<body>
+  <script>
+    
+    function myType(target) {
+      if (target === null)  return 'null'
+      if (target === undefined) return 'undefined'
+      // object array date error regexp boolean string number function symbol
+      const template = {
+        '[object Object]': 'object',
+        '[object Array]': 'array',
+        '[object String]': 'string',
+        '[object Boolean]': 'boolean',
+        '[object Number]': 'number',
+        '[object Symbol]': 'symbol',
+        '[object Error]': 'error',
+        '[object RegExp]': 'regexp',
+        '[object Date]': 'date'
+      }
+      if (typeof target === 'function') return 'function'
+      return template[Object.prototype.toString.call(target)]
+    }
+  
+  </script>
+</body>
+</html>
