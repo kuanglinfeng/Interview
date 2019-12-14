@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <style>
+    .show {
+      width: 7em;
+      height: 4em;
+      border: 1px solid #000;
+      margin: 3em auto;
+      font-size: 30px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+  
+  </style>
+</head>
+<body>
+  <div class="show"></div>
+  <script>
+  
+  </script>
+  <script>
+    // 使用setTimeout
+    // function countDown(dom, totalTime) {
+    //   var timer = null
+    //   function _countDown(dom, totalTime) {
+    //     if (totalTime < 0) {
+    //       clearTimeout(timer)
+    //       return
+    //     }
+    //     timer = setTimeout(() => {
+    //       dom.innerText = totalTime
+    //       totalTime--
+    //       _countDown(dom, totalTime)
+    //     }, 1000);
+    //   }
+    //   _countDown(dom, totalTime)
+    // }
+
+    // countDown(document.querySelector('.show'), 5)
+
+
+    // 使用setInterval
+    function countDown(dom, totalTime) {
+      var timer = null
+      timer = setInterval(() => {
+        if (totalTime < 0) {
+          clearInterval(timer)
+          timer = null
+          return 
+        }
+        dom.innerText = totalTime
+        totalTime--
+      }, 1000);
+
+    }
+
+    countDown(document.querySelector('.show'), 5)
+
+
+
+  </script>
+</body>
+</html>
