@@ -8,13 +8,12 @@
   </head>
   <body>
     <div id="root" data-v="3">
-      <p data-v="1"></p>
+      <p data-v="1" ></p>
       <span data-v="2">
         <span data-v="4"></span>
       </span>
       <p data-v="99"></p>
     </div>
-
     <script>
     // 找出所有路径，及所在路径的最大值
     // 要求输出:
@@ -23,7 +22,25 @@
     // ["DIV", "SPAN"], 3
     // ["DIV", "SPAN", "SPAN"], 4
     // ["DIV", "P"], 99
+
+      //     root
+      // p   span  p
+      //     span
+      function getAllPath(root, path, max) {
+        if (root) {
+          path = [...path, root.tagName]
+          max = Math.max(max, root.dataset.v)
+          console.log(path, max)
+          for (let i = 0; i < root.children.length; i++) {
+            getAllPath(root.children[i], path, max)
+          }
+        }
+      }
+
+      getAllPath(root, [], -99999999999999999999)
+
+
     </script>
-    
+
   </body>
 </html>
