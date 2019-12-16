@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Document</title>
+  </head>
+  <body>
+    <div id="root" data-v="3">
+      <p data-v="1"></p>
+      <span data-v="2">
+        <span data-v="4"></span>
+      </span>
+      <p data-v="99"></p>
+    </div>
+
+    <script>
+    // 找出所有路径，及所在路径的最大值
+    // 要求输出:
+    // ["DIV"], 3
+    // ["DIV", "P"], 3
+    // ["DIV", "SPAN"], 3
+    // ["DIV", "SPAN", "SPAN"], 4
+    // ["DIV", "P"], 99
+    </script>
+    
+  </body>
+</html>

@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+<body>
+  <script>
+
+
+    // function counter(v) {...}
+    // const c = counter(3)
+    // console.log(c.add()) // 4
+    // console.log(c.sub()) // 3
+    // c.add()
+    // console.log(c.add()) // 5
+    
+    function counter(v) {
+      let value = v
+      return {
+        add() {
+          return ++value
+        },
+        sub() {
+          return --value
+        }
+      }
+    }
+    
+    const c = counter(3)
+    console.log(c.add()) // 4
+    console.log(c.sub()) // 3
+    c.add()
+    console.log(c.add()) // 5
+
+
+  
+  
+  </script>
+</body>
+</html>
