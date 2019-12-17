@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+<body>
+  <script>
+  // 实现一个构造函数 new的时候每次加一  
+  //（一个函数是否被new的区别看博客：https://www.jianshu.com/p/79cc0a4fb7fe）
+  const Counter = (function () {
+    let value = 0
+    
+    return function () {
+      return {value: value++}
+    }
+
+  })()
+  
+
+  // {value: 0}
+  new Counter()
+  // {value: 1}
+  new Counter()
+  // {value: 2}
+  new Counter()
+  
+  
+  
+  
+  </script>
+</body>
+</html>
