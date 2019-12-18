@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+<body>
+  <script>
+  // 格式化数字。输入：12345，输出：12,234；输入：2345.6789，输出：2,345.6789。
+  // 要求：使用正则和非正则两种方式实现
+  
+  // 非正则
+  function format(str) {
+    var arr = str.split('.')
+    // 处理小数后的数字
+    var temp = arr[1] ? '.' + arr[1] : ''
+    // 对arr[0]每隔三位打点
+    var count = 0
+    var res = []
+    for (var i = arr[0].length - 1; i >= 0; i--) {
+      if (count && count % 3 === 0) {
+        res.unshift(',')
+      } 
+      res.unshift(arr[0][i])
+      count++
+    }
+    return res.join('') + temp
+  }
+
+  // 正则
+  function formatByRegExp(str) {
+    var arr = str.split('.')
+    // 处理小数后的数字
+    var temp = arr[1] ? '.' + arr[1] : ''
+    // 对arr[0]每隔三位打点
+    // ? 表示正向预查，\B表示单词边界,\d表示数字字符 $表示结尾
+    return arr[0].replace(/(?=(\B)(\d{3})+$)/g, ',') + temp
+  }
+  
+  
+  </script>
+</body>
+</html>
