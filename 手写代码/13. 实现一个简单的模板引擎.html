@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      let template = '我是{{ name }}，年龄{{ age }}，性别{{ sex }}'
+      let data = {
+        name: 'flinn',
+        age: 18,
+        sex: 'male'
+      }
+      // 我是flinn，年龄18，性别male
+      let s = render(template, data)
+      console.log(s)
+
+      function render(template, data) {
+        return template.replace(
+          // . === [^\r\n]，匹配除了\r，\n外的所有的字符
+          // * 任意个字符
+          // ? 匹配前面一个表达式0次或者1次（根据贪婪匹配原则，肯定会朝着1次去匹配）
+          // 如果没加?限定：则会匹配到结果 => {{ name }}，年龄{{ age }}，性别{{ sex }}
+          // (即根据左右双大括号，一次全部匹配到之间的全部内容)
+          new RegExp('{{(.*?)}}', 'g'),
+          // match => {{value}}   key => value
+          (match, key) => data[key.trim()]
+        )
+      }
+    </script>
+  </body>
+</html>
