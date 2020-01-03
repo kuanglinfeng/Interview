@@ -17,7 +17,6 @@ function jump(n) {
   return _jump(n)
 }
 
-
 console.log(jump(50))
 
 // 没有使用动态规划优化，栈溢出了
