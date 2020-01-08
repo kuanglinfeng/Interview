@@ -1,69 +1,82 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>Document</title>
-  <style>
-    .show {
-      width: 7em;
-      height: 4em;
-      border: 1px solid #000;
-      margin: 3em auto;
-      font-size: 30px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-  
-  </style>
-</head>
-<body>
-  <div class="show"></div>
-  <script>
-  
-  </script>
-  <script>
-    // 使用setTimeout
-    // function countDown(dom, totalTime) {
-    //   var timer = null
-    //   function _countDown(dom, totalTime) {
-    //     if (totalTime < 0) {
-    //       clearTimeout(timer)
-    //       return
-    //     }
-    //     timer = setTimeout(() => {
-    //       dom.innerText = totalTime
-    //       totalTime--
-    //       _countDown(dom, totalTime)
-    //     }, 1000);
-    //   }
-    //   _countDown(dom, totalTime)
-    // }
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Document</title>
+    <style>
+      .show {
+        width: 7em;
+        height: 4em;
+        border: 1px solid #000;
+        margin: 3em auto;
+        font-size: 30px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="show"></div>
+    <script></script>
+    <script>
+      // 1. 使用setInterval
+      // function countDown(dom, totalTime) {
+      //   var timer = null
+      //   timer = setInterval(() => {
+      //     if (totalTime < 0) {
+      //       clearInterval(timer)
+      //       timer = null
+      //       return
+      //     }
+      //     dom.innerText = totalTime
+      //     totalTime--
+      //   }, 1000)
+      // }
 
-    // countDown(document.querySelector('.show'), 5)
-
-
-    // 使用setInterval
-    function countDown(dom, totalTime) {
-      var timer = null
-      timer = setInterval(() => {
-        if (totalTime < 0) {
-          clearInterval(timer)
-          timer = null
-          return 
+      // 2. 使用setTimeout
+      function countDown(dom, totalTime) {
+        var timer = null
+        function _countDown(dom, totalTime) {
+          if (totalTime < 0) {
+            clearTimeout(timer)
+            return
+          }
+          timer = setTimeout(() => {
+            dom.innerText = totalTime
+            totalTime--
+            _countDown(dom, totalTime)
+          }, 1000);
         }
-        dom.innerText = totalTime
-        totalTime--
-      }, 1000);
+        _countDown(dom, totalTime)
+      }
 
-    }
+      // countDown(document.querySelector('.show'), 5)
 
-    countDown(document.querySelector('.show'), 5)
+      // 3(优化版). 使用requestAnimationFrame（相当于默认是每隔1000/60ms执行一次fn）优化
+      //   封装成一个函数，这个函数默认就是每隔1s必定执行一次，不受任务队列的约束
+      //   然后用这个函数替代setTimeout可以优化 2 
+      function mySetTimeout(fn) {
+        let count = 0
+        // let prevTime = new Date().getTime()
+        function foo() {
+          window.requestAnimationFrame(() => {
+            count++
+            if (count % 61 === 0) {
+              // let curTime = new Date().getTime()
+              // console.log(curTime - prevTime)
+              fn()
+              return
+            }
+            foo()
+          })
+        }
+        foo()
+      }
 
-
-
-  </script>
-</body>
+      countDown(document.querySelector('.show'), 5)
+    </script>
+  </body>
 </html>
