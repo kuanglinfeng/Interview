@@ -22,6 +22,7 @@ function ajax(config) {
     xhr.send(data)
   }
   xhr.onreadystatechange = function () {
+    // readyState为4 表示整个请求过程已经完毕
     if (xhr.readyState === 4) {
       let status = xhr.status
       if (status === 200 && status < 300 || status === 304) {

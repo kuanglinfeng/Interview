@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <button id="xxx">点我</button>
+  <script>
+    xxx.onclick = function () {
+      const request = new XMLHttpRequest()
+      request.onreadystatechange = function () {
+        if (request.readyState === 4) {
+          console.log('请求响应都完毕了')
+          if (request.status >= 200 && request.status < 300) {
+            console.log('说明请求成功')
+            const string = request.responseText
+            const data = JSON.parse(string)
+            console.log(data)
+          } else if (request.status >= 400) {
+            console.log('说明请求失败')
+          }
+        }
+      }
+      request.open('GET', 'https://www.fastmock.site/mock/370ef6f06050fbde09e0f3df4df46990/api/getList')
+      request.send()
+    }
+  </script>
+</body>
+</html>
