@@ -33,6 +33,8 @@
 
 ## CORS（Cross-origin resource sharing，跨域资源共享）
 
+突破同源策略 === 跨域
+
 CORS可以告诉浏览器，我俩是一家的，不要阻止他
 
 相比于JSONP只能发送GET请求，这是一种比较好的跨域的方式

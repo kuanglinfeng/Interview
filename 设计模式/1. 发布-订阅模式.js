@@ -1,49 +1,52 @@
 
 // 实现一个EventHub（发布订阅模式实现的一种实例，EventHub可称之为事件中心）
 class EventHub {
+
   constructor() {
-    this.events = {}
-  }
-  // 添加监听事件
-  on(type, fn) {
-    if (!this.events[type]) {
-      this.events[type] = [fn]
-    } else {
-      this.events[type].push(fn)
-    }
-  }
-  // 触发事件
-  trigger(type) {
-    if (this.events[type] === undefined) {
-      throw new Error(`${type} is not defined`)
-    } else {
-      this.events[type].forEach(item => item())
-      return true
-    }
-  }
-  // 移除监听事件
-  off(type) {
-    if (this.events[type]) {
-      delete this.events[type]
-    }
+    this.cache = {}
   }
 
-  // 触发一次再移除
-  once(type) {
-    this.trigger(type) ? this.off(type) : null
+  on(eventName, fn) {
+    this.cache[eventName] = this.cache[eventName] || []
+    this.cache[eventName].push(fn)
+  }
+
+  emit(eventName, data) {
+    (this.cache[eventName] || []).forEach(fn => fn(data))
+  }
+
+  // 取消订阅
+  off(eventName, fn) {
+    this.cache[eventName] = this.cache[eventName] || []
+    let index = undefined
+    // 把fn从this.cache[eventName]中删除掉
+    for (let i = 0; i < this.cache[eventName].length; i++) {
+      if (this.cache[eventName][i] === fn) {
+        index = i
+        break
+      }
+    }
+    if (index !== undefined) {
+      this.cache[eventName].splice(index, 1)
+    }
   }
 }
 
-const o = new EventHub()
+const eventHub = new EventHub()
 
-o.on('print', () => {
-  console.log('flinn');
-})
+const fn = (data) => {
+  console.log(data)
+}
 
-o.on('print', () => {
-  console.log('king');
-})
+eventHub.on('xxx', fn)
 
-o.trigger('print')
-// o.trigger('print')
-console.log(o.events)
+eventHub.emit('xxx', 'Hello')
+
+eventHub.off('xxx', fn)
+
+eventHub.emit('xxx', 'Hello')
+
+
+
+
+
