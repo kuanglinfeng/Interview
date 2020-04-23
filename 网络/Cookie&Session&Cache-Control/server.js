@@ -9,10 +9,31 @@ server.on('request', (request, response) => {
   let { method, url, headers } = request
   switch (url) {
     case '/': {
+      const cookie = request.headers.cookie
+      let email = ''
+      let password = ''
+      try {
+        email = cookie.split('=')[1]
+        const strings = fs.readFileSync('./public/db/users.json', 'utf8')
+        const users = JSON.parse(strings)
+        const user = users.find(user => user.email === email)
+        password = user.password
+      } catch (e) {
+        password = ''
+      }
+      console.log(password)
       response.setHeader('Content-Type', 'text/html; charset=utf-8')
       fs.readFile(p.resolve(publicDir, 'index.html'), (error, data) => {
-        if (error)  throw error
-        response.end(data.toString())
+        if (error) throw error
+        if (password) {
+          let string = data.toString()
+          string = string.replace('__username__', email)
+          string = string.replace('__password__', password)
+          console.log(string)
+          response.end(string)
+        } else {
+          response.end(data.toString())
+        }
       })
       break
     }
@@ -39,7 +60,7 @@ server.on('request', (request, response) => {
             let parts = string.split('=')
             let key = parts[0]
             let value = parts[1]
-            hash[key] = value
+            hash[key] = decodeURIComponent(value)
           })
           let { email, password, confirm } = hash
           if (email.indexOf('@') === -1) {
@@ -50,11 +71,63 @@ server.on('request', (request, response) => {
             response.write('{"status": -1, "message": "password confirm is not same"}')
           } else {
             response.statusCode = 200
+            const users = fs.readFileSync('./public/db/users.json', 'utf-8')
+            const _users = JSON.parse(users)
+            const isExist = _users.some(user => user.email === email)
+            if (isExist) {
+              response.end('{"status": 0, "message": "email is exist"}')
+              return
+            }
+            _users.push({ email, password })
+            fs.writeFileSync('./public/db/users.json', JSON.stringify(_users))
             response.write('{"status": 0, "message": "success"}')
           }
           response.end()
         })
         // response.end('{"message": "注册成功", "status": 200}')
+      }
+      break
+    }
+    case '/signin': {
+      if (method === 'GET') {
+        response.setHeader('Content-Type', 'text/html; charset=utf-8')
+        fs.readFile(p.resolve(publicDir, 'signin.html'), (error, data) => {
+          if (error)  throw error
+          response.end(data.toString())
+        })
+      }
+      if (method === 'POST') {
+        const data = []
+        request.on('data', (chunk) => {
+          data.push(chunk)
+        })
+        request.on('end', () => {
+          const _data = Buffer.concat(data).toString()
+          let strings = _data.split('&')
+          let hash = {}
+          strings.forEach(string => {
+            let parts = string.split('=')
+            let key = parts[0]
+            let value = parts[1]
+            hash[key] = decodeURIComponent(value)
+          })
+          let { email, password } = hash
+          if (email.indexOf('@') === -1) {
+            response.statusCode = 400
+            response.end('{"status": -1, "message": "email is bad"}')
+            return
+          }
+          const users = fs.readFileSync('./public/db/users.json', 'utf-8')
+          const _users = JSON.parse(users)
+          const isOk = _users.some(user => user.email === email && user.password === password)
+          if (isOk) {
+            // 用户登录成功，设置cookie
+            response.setHeader('Set-Cookie', `email=${email}`)
+            response.end('{"status": 0, "message": "login success"}')
+          } else {
+            response.end('{"status": 0, "message": "email or password error"}')
+          }
+        })
       }
       break
     }
