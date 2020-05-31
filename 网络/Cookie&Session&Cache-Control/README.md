@@ -128,7 +128,75 @@ max-age的单位是秒，表示缓存多久
 
 1. 首页(index.html)不要设置`Cache-Control`，因为如果连首页都被缓存了，用户没有办法获取所有的最新的资源
 
-2. 一般设置html和css，可以设置10年；如果10年内要更新css和html，可以改变请求的url（比如加一个查询参数），这样就会重新请求了
+2. 一般设置html和css，可以设置10年；如果10年内要更新css和html，可以改变请求的url（比如加一个查询参数，或者文件名重新生成一个随机数），这样就会重新请求了
 
 
+### Expires （缓存控制）
 
+如果你设置了Cache-Control，那么Expires会被忽略
+
+Expires响应头指定了一个日期/时间，在此之前，会读http缓存；在此之后，HTTP响应被认为是过时的，此时才会重新请求
+
+`response.setHeader('Expires', 'Sun, 31 May 2020 02:11:38 GMT')`
+
+### Cache-Control 和 Expires的区别
+
+Cache-Control强调过多久过期，Expires强调什么时候过期
+
+Expires设置的时间是用户计算机的本地时间，可以被更改。
+
+一般使用Cache-Control来做http缓存
+
+
+### ETag
+
+MD5：是一个摘要算法，不是加密算法。
+
+比如：你在下载某个资源的时候，如何知道这个资源没有被人篡改过呢？
+
+假设有一个文件1.txt，里面的内容为11111
+
+运行：md5 1.txt
+
+结果为：fa8f294721ab3fbb37793c68ff2cf09b
+
+现在将1.txt更改为11011
+
+运行：md5 1.txt
+
+结果为：5d991b9e4dc5e0515d8a8b026e95c482
+
+md5算法的特点：如果两个资源差别很小，那么生成的md5字符串差别就越大
+
+ETag：ETagHTTP响应头是资源的特定版本的标识符。这可以让缓存更高效，并节省带宽，因为如果内容没有改变，Web服务器不需要发送完整的响应。
+
+代码演示ETag头的用法：
+
+```js
+if (path === '/js/main.js') {
+  let string = fs.readFileSync('./js/main.js', 'utf8')
+  response.setHeader('Content-Type', 'application/javascript;charset=utf8')
+  let fileMd5 = md5(string)
+  // 如果上一次的MD5值和当前的MD5是一样的
+  if (request.headers['if-none-match'] === fileMd5) {
+    // 只有响应头，告诉客户端拿以前的资源就好了，因为没有变化
+    response.status = 304
+  } else {
+    // 有响应头，说明和上一次的MD5值不一样，需要重新返回新的资源给客户端
+    response.setHeader('ETag', fileMd5)
+    response.write(string)
+  }
+  response.end()
+}
+```
+
+ETag和Cache-Control做缓存的区别：
+
+ETag会发出请求，如果MD5一样就不下载；Cache-Control压根不会发请求
+
+
+### If-Modified-Since
+
+客户端还会通过If-Modified-Since头将先前服务器端发过来的最后修改时间戳发送给服务器，
+
+服务器端通过这个时间戳判断客户端的页面是否是最新的，如果不是最新的，则返回最新的内容，如果是最新的，则返回304，客户端继续使用本地缓存。
