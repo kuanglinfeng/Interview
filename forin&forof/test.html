@@ -28,6 +28,20 @@
     }
 
 
+    function jsonp(url, fn) {
+      let script = document.createElement('script')
+      const fnName = `jsonp_${new Date().getTime()}`;
+      script.src = url + '?' + 'fn=' + fnName
+      document.body.appendChild(script)
+
+      window[fnName] = function (res) {
+        fn && fn(res)
+        document.body.removeChild(script)
+        delete window[fnName]
+      }  
+
+    }
+
 
     
   </script>

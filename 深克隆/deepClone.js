@@ -18,6 +18,5 @@ function deepClone(origin, map = new Map()) {
       }
     }
   }
-  
   return o
 }
